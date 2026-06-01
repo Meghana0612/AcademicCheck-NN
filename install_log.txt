@@ -1,0 +1,133 @@
+Collecting fastapi==0.111.0 (from -r requirements.txt (line 1))
+  Using cached fastapi-0.111.0-py3-none-any.whl.metadata (25 kB)
+Collecting uvicorn==0.29.0 (from -r requirements.txt (line 2))
+  Using cached uvicorn-0.29.0-py3-none-any.whl.metadata (6.3 kB)
+Collecting python-multipart==0.0.9 (from -r requirements.txt (line 3))
+  Using cached python_multipart-0.0.9-py3-none-any.whl.metadata (2.5 kB)
+Collecting pdfplumber==0.11.0 (from -r requirements.txt (line 4))
+  Using cached pdfplumber-0.11.0-py3-none-any.whl.metadata (39 kB)
+Collecting nltk==3.8.1 (from -r requirements.txt (line 5))
+  Using cached nltk-3.8.1-py3-none-any.whl.metadata (2.8 kB)
+Collecting spacy==3.7.4 (from -r requirements.txt (line 6))
+  Using cached spacy-3.7.4.tar.gz (1.3 MB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'error'
+  error: subprocess-exited-with-error
+  
+  pip subprocess to install build dependencies did not run successfully.
+  exit code: 1
+  
+  [99 lines of output]
+  Ignoring numpy: markers 'python_version < "3.9"' don't match your environment
+  Collecting setuptools
+    Using cached setuptools-82.0.1-py3-none-any.whl.metadata (6.5 kB)
+  Collecting cython<3.0,>=0.25
+    Using cached Cython-0.29.37-py2.py3-none-any.whl.metadata (3.1 kB)
+  Collecting cymem<2.1.0,>=2.0.2
+    Using cached cymem-2.0.13-cp313-cp313-win_amd64.whl.metadata (9.9 kB)
+  Collecting preshed<3.1.0,>=3.0.2
+    Using cached preshed-3.0.13-cp313-cp313-win_amd64.whl.metadata (5.4 kB)
+  Collecting murmurhash<1.1.0,>=0.28.0
+    Using cached murmurhash-1.0.15-cp313-cp313-win_amd64.whl.metadata (2.3 kB)
+  Collecting thinc<8.3.0,>=8.2.2
+    Using cached thinc-8.2.5.tar.gz (193 kB)
+    Installing build dependencies: started
+    Installing build dependencies: finished with status 'error'
+    error: subprocess-exited-with-error
+  
+    pip subprocess to install build dependencies did not run successfully.
+    exit code: 1
+  
+    [67 lines of output]
+    Ignoring numpy: markers 'python_version < "3.9"' don't match your environment
+    Collecting setuptools
+      Using cached setuptools-82.0.1-py3-none-any.whl.metadata (6.5 kB)
+    Collecting cython<3.0,>=0.25
+      Using cached Cython-0.29.37-py2.py3-none-any.whl.metadata (3.1 kB)
+    Collecting murmurhash<1.1.0,>=1.0.2
+      Using cached murmurhash-1.0.15-cp313-cp313-win_amd64.whl.metadata (2.3 kB)
+    Collecting cymem<2.1.0,>=2.0.2
+      Using cached cymem-2.0.13-cp313-cp313-win_amd64.whl.metadata (9.9 kB)
+    Collecting preshed<3.1.0,>=3.0.2
+      Using cached preshed-3.0.13-cp313-cp313-win_amd64.whl.metadata (5.4 kB)
+    Collecting blis<0.8.0,>=0.7.8
+      Using cached blis-0.7.11.tar.gz (2.9 MB)
+      Installing build dependencies: started
+      Installing build dependencies: finished with status 'done'
+      Getting requirements to build wheel: started
+      Getting requirements to build wheel: finished with status 'done'
+      Preparing metadata (pyproject.toml): started
+      Preparing metadata (pyproject.toml): finished with status 'done'
+    Collecting numpy<2.0.0,>=1.25.0
+      Using cached numpy-1.26.4.tar.gz (15.8 MB)
+      Installing build dependencies: started
+      Installing build dependencies: finished with status 'done'
+      Getting requirements to build wheel: started
+      Getting requirements to build wheel: finished with status 'done'
+      Installing backend dependencies: started
+      Installing backend dependencies: finished with status 'done'
+      Preparing metadata (pyproject.toml): started
+      Preparing metadata (pyproject.toml): finished with status 'error'
+      error: subprocess-exited-with-error
+  
+      Preparing metadata (pyproject.toml) did not run successfully.
+      exit code: 1
+  
+      [21 lines of output]
+      + C:\Users\megha\AppData\Local\Programs\Python\Python313\python.exe C:\Users\megha\AppData\Local\Temp\pip-install-g16zl30r\numpy_ed93796c4ebe48868900df50819e9cec\vendored-meson\meson\meson.py setup C:\Users\megha\AppData\Local\Temp\pip-install-g16zl30r\numpy_ed93796c4ebe48868900df50819e9cec C:\Users\megha\AppData\Local\Temp\pip-install-g16zl30r\numpy_ed93796c4ebe48868900df50819e9cec\.mesonpy-85nrvhdb -Dbuildtype=release -Db_ndebug=if-release -Db_vscrt=md --native-file=C:\Users\megha\AppData\Local\Temp\pip-install-g16zl30r\numpy_ed93796c4ebe48868900df50819e9cec\.mesonpy-85nrvhdb\meson-python-native-file.ini
+      The Meson build system
+      Version: 1.2.99
+      Source dir: C:\Users\megha\AppData\Local\Temp\pip-install-g16zl30r\numpy_ed93796c4ebe48868900df50819e9cec
+      Build dir: C:\Users\megha\AppData\Local\Temp\pip-install-g16zl30r\numpy_ed93796c4ebe48868900df50819e9cec\.mesonpy-85nrvhdb
+      Build type: native build
+      Project name: NumPy
+      Project version: 1.26.4
+      WARNING: Failed to activate VS environment: Could not find C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe
+  
+      ..\meson.build:1:0: ERROR: Unknown compiler(s): [['icl'], ['cl'], ['cc'], ['gcc'], ['clang'], ['clang-cl'], ['pgcc']]
+      The following exception(s) were encountered:
+      Running `icl ""` gave "[WinError 2] The system cannot find the file specified"
+      Running `cl /?` gave "[WinError 2] The system cannot find the file specified"
+      Running `cc --version` gave "[WinError 2] The system cannot find the file specified"
+      Running `gcc --version` gave "[WinError 2] The system cannot find the file specified"
+      Running `clang --version` gave "[WinError 2] The system cannot find the file specified"
+      Running `clang-cl /?` gave "[WinError 2] The system cannot find the file specified"
+      Running `pgcc --version` gave "[WinError 2] The system cannot find the file specified"
+  
+      A full log can be found at C:\Users\megha\AppData\Local\Temp\pip-install-g16zl30r\numpy_ed93796c4ebe48868900df50819e9cec\.mesonpy-85nrvhdb\meson-logs\meson-log.txt
+      [end of output]
+  
+      note: This error originates from a subprocess, and is likely not a problem with pip.
+    error: metadata-generation-failed
+  
+    Encountered error while generating package metadata.
+  
+    See above for output.
+  
+    note: This is an issue with the package mentioned above, not pip.
+    hint: See above for details.
+    [end of output]
+  
+    note: This error originates from a subprocess, and is likely not a problem with pip.
+  error: subprocess-exited-with-error
+  
+  pip subprocess to install build dependencies did not run successfully.
+  exit code: 1
+  
+  See above for output.
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+  [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[notice] A new release of pip is available: 25.2 -> 26.1.1
+[notice] To update, run: python.exe -m pip install --upgrade pip
+error: subprocess-exited-with-error
+
+pip subprocess to install build dependencies did not run successfully.
+exit code: 1
+
+See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
