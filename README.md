@@ -25,6 +25,20 @@ AI-powered plagiarism detection system using NLP and Transformer models.
 - F1 Score: 85.18%
 - AUC: 92.01%
 
+## Screenshots
+
+### Home Page
+![Home](screenshots/home.png)
+
+### Result Page
+![Result](screenshots/result.png)
+
+### Confusion Matrix
+![Confusion Matrix](screenshots/confusion_matrix.png)
+
+### ROC Curve
+![ROC Curve](screenshots/roc_curve.png)
+
 ## Run
 
 pip install -r requirements.txt
