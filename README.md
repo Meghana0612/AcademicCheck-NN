@@ -19,10 +19,17 @@ AI-powered plagiarism detection system using NLP and Transformer models.
 
 - Python
 - Streamlit
-- spaCy
+- Transformers (BERT)
 - Sentence Transformers
 - Scikit-learn
-- PyTorch
+- SHAP
+- LIME
+- Plotly
+- PyMuPDF
+- python-docx
+- deep-translator
+- BeautifulSoup
+- Requests
 
 ## Performance
 
