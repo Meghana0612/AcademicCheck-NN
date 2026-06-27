@@ -4,11 +4,16 @@ AI-powered plagiarism detection system using NLP and Transformer models.
 
 ## Features
 
-- Semantic plagiarism detection
-- Cross Encoder similarity scoring
-- Explainable AI
-- TF-IDF similarity
-- Streamlit dashboard
+- Semantic plagiarism detection using BERT CrossEncoder
+- Explainable AI using SHAP & LIME
+- PDF, TXT and DOCX support
+- Multi-document N×N comparison
+- Pairwise similarity heatmap
+- Sentence-level plagiarism analysis
+- Automatic PDF report generation
+- File vs Website plagiarism checking
+- Multi-language document support
+- Interactive Streamlit dashboard
 
 ## Tech Stack
 
