@@ -4,6 +4,13 @@ import plotly.express as px
 import streamlit as st
 from itertools import combinations
 from pypdf import PdfReader
+from docx import Document
+from io import BytesIO
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from src.web_search import get_webpage_text
+from src.translator import translate_to_english
+
 
 from src.predictor import PlagiarismPredictor
 
@@ -261,23 +268,49 @@ if "selected_metric" not in st.session_state:
 if "show_about" not in st.session_state:
     st.session_state.show_about = False
 
+def extract_docx_text(uploaded_file):
+    try:
+        doc = Document(uploaded_file)
 
+        text = []
+
+        for para in doc.paragraphs:
+            if para.text.strip():
+                text.append(para.text)
+
+        return "\n".join(text)
+
+    except Exception as e:
+        st.error(f"Could not read DOCX {uploaded_file.name}: {e}")
+        return ""
 # =========================
 # TEXT EXTRACTION
 # =========================
 def extract_text(uploaded_file):
+
     if uploaded_file.name.lower().endswith(".pdf"):
         try:
             reader = PdfReader(uploaded_file)
+
             pages = []
+
             for page in reader.pages:
                 pages.append(page.extract_text() or "")
+
             return "\n".join(pages).strip()
+
         except Exception as e:
             st.error(f"Could not read PDF {uploaded_file.name}: {e}")
             return ""
+
+    elif uploaded_file.name.lower().endswith(".docx"):
+        return extract_docx_text(uploaded_file)
+
     else:
-        return uploaded_file.read().decode("utf-8", errors="ignore").strip()
+        return uploaded_file.read().decode(
+            "utf-8",
+            errors="ignore"
+        ).strip()
 
 
 # =========================
@@ -339,6 +372,23 @@ def make_report_text(result, name1, name2):
                 lines.append(f"LIME {item[0]}: {item[1]}")
 
     return "\n".join(lines)
+
+def create_pdf_report(report_text):
+    buffer = BytesIO()
+
+    doc = SimpleDocTemplate(buffer)
+    styles = getSampleStyleSheet()
+
+    story = []
+
+    for line in report_text.split("\n"):
+        story.append(Paragraph(line.replace(" ", "&nbsp;"), styles["Normal"]))
+
+    doc.build(story)
+
+    buffer.seek(0)
+
+    return buffer
 
 
 # =========================
@@ -556,7 +606,7 @@ def build_pairwise_matrix(names, pair_results, metric_key):
 # SIDEBAR
 # =========================
 st.sidebar.title("AcademicCheck NN")
-mode = st.sidebar.radio("Mode", ["Text Input", "Multi File Upload"])
+mode = st.sidebar.radio("Mode", ["Text Input", "Multi File Upload", "File vs Website"])
 st.sidebar.markdown("---")
 
 if st.sidebar.button("About"):
@@ -630,19 +680,25 @@ if mode == "Text Input":
             st.error("Both texts must be non-empty.")
         else:
             with st.spinner("Analyzing..."):
-                res = predictor.predict(t1, t2)
+                t1, lang1 = translate_to_english(t1)
+                t2, lang2 = translate_to_english(t2)
+
+                st.info(f"Language 1: {lang1}")
+                st.info(f"Language 2: {lang2}")
+
+            res = predictor.predict(t1, t2)
             show_result(res, "Text1", "Text2")
 
 
 # =========================
 # MULTI FILE MODE
 # =========================
-else:
+elif mode == "Multi File Upload":
     st.markdown("### Upload Multiple Files")
     uploaded_files = st.file_uploader(
-        "Upload .txt or .pdf files",
+        "Upload .txt, .pdf or .docx files",
         accept_multiple_files=True,
-        type=["txt", "pdf"],
+        type=["txt", "pdf","docx"],
         key="batch_upload",
     )
 
@@ -656,7 +712,14 @@ else:
             names = [f.name for f in uploaded_files]
 
             with st.spinner("Extracting text from documents..."):
-                texts = [extract_text(f) for f in uploaded_files]
+                texts = []
+
+            for f in uploaded_files:
+                text = extract_text(f)
+
+                text, lang = translate_to_english(text)
+
+                texts.append(text)
 
             valid = [(n, t) for n, t in zip(names, texts) if len(t.strip()) > 10]
             if len(valid) < 2:
@@ -784,7 +847,28 @@ else:
         )
         chosen_idx = pair_labels.index(chosen)
         chosen_rec = results[chosen_idx]
-        show_result(chosen_rec["result"], chosen_rec["file1"], chosen_rec["file2"])
+
+        show_result(
+            chosen_rec["result"],
+            chosen_rec["file1"],
+            chosen_rec["file2"],
+        )
+
+        # -------- PDF Report --------
+        report_text = make_report_text(
+            chosen_rec["result"],
+            chosen_rec["file1"],
+            chosen_rec["file2"],
+        )
+
+        pdf = create_pdf_report(report_text)
+
+        st.download_button(
+            label="📄 Download PDF Report",
+            data=pdf,
+            file_name=f"{chosen_rec['file1']}_vs_{chosen_rec['file2']}_Report.pdf",
+            mime="application/pdf",
+        )
 
         combined_text = []
         for rec in results:
@@ -792,14 +876,57 @@ else:
             combined_text.append(
                 f"{rec['file1']} vs {rec['file2']} -> {r['verdict']} ({r['probability']}%)"
             )
+elif mode == "File vs Website":
+    st.markdown("### Compare File with Website")
 
-        st.download_button(
-            "Download All Results",
-            data="\n".join(combined_text),
-            file_name="all_results.txt",
-            mime="text/plain",
-        )
+    uploaded_file = st.file_uploader(
+        "Upload File",
+        type=["pdf", "txt", "docx"],
+        key="website_upload"
+    )
 
+    website_url = st.text_input(
+        "Enter Website URL"
+    )
 
+    if uploaded_file and website_url:
 
-        
+        with st.spinner("Extracting document..."):
+            file_text = extract_text(uploaded_file)
+
+            file_text, lang = translate_to_english(file_text)
+
+            st.info(f"Detected Language: {lang}")
+
+        with st.spinner("Downloading webpage..."):
+            web_text = get_webpage_text(website_url)
+
+        if len(web_text.strip()) < 100:
+            st.error("Unable to extract enough text from the website.")
+        else:
+
+            result = predictor.predict(
+                file_text,
+                web_text
+            )
+
+            show_result(
+                result,
+                uploaded_file.name,
+                website_url
+            )
+
+            report_text = make_report_text(
+                result,
+                uploaded_file.name,
+                website_url
+            )
+
+            pdf = create_pdf_report(report_text)
+
+            st.download_button(
+                "📄 Download PDF Report",
+                data=pdf,
+                file_name="Website_Report.pdf",
+                mime="application/pdf"
+            )
